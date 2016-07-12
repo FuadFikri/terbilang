@@ -1,7 +1,7 @@
 <?php
 class Terbilang
 {
-	private $x3 = Array("", "ribu", "juta", "miliar", "triliun");
+	private $x3 = Array("", "ribu", "juta", "miliar", "triliun", "kuadriliun", "kuintiliun", "sekstiliun", "septiliun", "oktiliun", "noniliun", "desiliun");
 	private $x2 = Array("ratus", "seratus");
 	private $x1 = Array("puluh", "belas", "sepuluh", "sebelas");
 	private $x0 = Array("nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan");
@@ -12,7 +12,7 @@ class Terbilang
 	}
 	public function process($n)
 	{
-		$n = $this->distinguish_num($n);
+		$n = $this->distinguish_num($n); // only get numbers
 		$len = strlen($n);
 		$head = $len % 3; //0,1,2
 		
@@ -30,10 +30,10 @@ class Terbilang
 		}
 
 		$sections = ceil(strlen($ntail)/3);
-		if($sections > 5) return false;
+		if($sections > count($this->x3)) return false;
 
 		// process `tail`
-		for($i=$sections-1;$i>=0;$i--)
+		for($i = $sections-1; $i >= 0;$i--)
 		{
 			if($ntail == 0)break;
 			$k = substr($ntail, ($i*3), 3);
@@ -98,4 +98,4 @@ class Terbilang
 		return $o;
 	}
 }
-?>
+?>php
