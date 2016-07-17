@@ -11,6 +11,7 @@ function getRandom($len)
   }
   return $o;
 }
+print "Begin testing".PHP_EOL;
 for($i = 1; $i <= 37; $i++)
 {
   print $t->process(getRandom($i)).PHP_EOL;
