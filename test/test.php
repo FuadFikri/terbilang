@@ -1,5 +1,6 @@
 <?php
-include('../src/terbilang.php');
+define("PATH_ROOT", dirname(__FILE__));
+include(PATH_ROOT . "../src/terbilang.php");
 
 $t = new Terbilang();
 function getRandom($len)
