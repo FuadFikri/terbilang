@@ -98,4 +98,4 @@ class Terbilang
 		return $o;
 	}
 }
-?>php
+?>
