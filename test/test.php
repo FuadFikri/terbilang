@@ -13,6 +13,6 @@ function getRandom($len)
 }
 for($i = 1; $i <= 37; $i++)
 {
-  print $t->process(getRandom($i));
+  print $t->process(getRandom($i)).PHP_EOL;
 }
 ?>
