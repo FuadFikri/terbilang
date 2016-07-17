@@ -8,7 +8,7 @@ function getRandom($len)
   $o = "";
   for($i = 0; $i < $len; $i++)
   {
-    $o .= (str_len($o) > 0) ? mt_rand(1,9) : mt_rand(0,9);
+    $o .= (strlen($o) > 0) ? mt_rand(1,9) : mt_rand(0,9);
   }
   return $o;
 }
