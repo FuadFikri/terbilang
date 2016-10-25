@@ -5,7 +5,7 @@ class Terbilang
 	private $x2 = Array("ratus", "seratus");
 	private $x1 = Array("puluh", "belas", "sepuluh", "sebelas");
 	private $x0 = Array("nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan");
-	
+
 	public function __construct()
 	{
 		// constructor
@@ -15,7 +15,7 @@ class Terbilang
 		$n = $this->distinguish_num($n); // only get numbers
 		$len = strlen($n);
 		$head = $len % 3; //0,1,2
-		
+
 		$result = "";
 		$nhead = 0; $ntail = 0;
 		$j = 0;
@@ -50,9 +50,9 @@ class Terbilang
 				$result = "seribu ".$result;
 			else
 			$result = (strlen($nhead) == 1 ? $this->satuan($nhead) : (strlen($nhead) == 2 ? $this->puluhan($nhead) : $this->ratusan($nhead)))." ".$this->x3[$j] . " " . $result;
-		return $result;
+		return substr($result, 0, strlen($result)-2); // removing two spaces at the end of the string
 	}
-	
+
 	public function ratusan($n)
 	{
 		$res = "";
@@ -77,7 +77,7 @@ class Terbilang
 		}
 		else
 		{
-			return (substr($n, 0, 1) == 0 ? "" : ($this->satuan(substr($n, 0, 1))." ".$this->x1[0]." ")) . $this->satuan(substr($n, 1, 1));
+			return (substr($n, 0, 1) == 0 ? "" : ($this->satuan(substr($n, 0, 1))." ".$this->x1[0]." ")) . $this->satuan(substr($n, 1, 1), false);
 		}
 	}
 	public function satuan($n, $retnol = true)
