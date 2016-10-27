@@ -1,12 +1,9 @@
 <?php
-<<<<<<< HEAD
-=======
 define("PATH_ROOT", dirname(__FILE__));
 if(file_exists($PATH = (PATH_ROOT . "/../src/terbilang.php")))
 {
   include($PATH);
 }
->>>>>>> test-1
 use PHPUnit\Framework\TestCase;
 
 class terbilangTest extends TestCase
@@ -14,13 +11,6 @@ class terbilangTest extends TestCase
   public function testProcessOne()
   {
     $a = new Terbilang();
-<<<<<<< HEAD
-    $b = $a->process(5.710.666.123);
-
-    $c = "lima milyar tujuh ratus sepuluh juta enam ratus enam puluh enam ribu seratus dua puluh tiga";
-
-    $this->assertEquals($c, $b);
-=======
     $samples = Array(
       "Rp5710666123" => "lima miliar tujuh ratus sepuluh juta enam ratus enam puluh enam ribu seratus dua puluh tiga",
       ".5.7.1.0.6.6.6.1.2.3." => "lima miliar tujuh ratus sepuluh juta enam ratus enam puluh enam ribu seratus dua puluh tiga",
@@ -67,7 +57,6 @@ class terbilangTest extends TestCase
     {
       $this->assertEquals($expectation, $a->toWord($sample));
     }
->>>>>>> test-1
   }
 }
 ?>
