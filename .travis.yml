@@ -7,9 +7,6 @@ php:
   - hhvm
   - nightly
 install: true
-before_script:
-  - composer install
-  - composer require atoum/atoum
 script:
   - wget https://phar.phpunit.de/phpunit.phar
   - php phpunit.phar --version
