@@ -50,7 +50,8 @@ class terbilangTest extends TestCase
       "22210" => "dua puluh dua ribu dua ratus sepuluh",
       "22209" => "dua puluh dua ribu dua ratus sembilan",
       "23211" => "dua puluh tiga ribu dua ratus sebelas",
-      "10212" => "sepuluh ribu dua ratus dua belas"
+      "10212" => "sepuluh ribu dua ratus dua belas",
+      17222 => "tujuh belas ribu dua ratus dua puluh dua"
     );
     foreach($samples as $sample => $expectation)
     {

@@ -12,23 +12,23 @@ class Terbilang
     $len = strlen($number);
     $return = "";
 
-      $section = ceil($len / 3);
-      $mod = $len % 3;
-      for ($i = 1; $i <= $section ; $i++) {
-        if($i == $section && $mod > 0)
-          $triplet = substr($number, 0, $mod);
-        else
-          $triplet = substr($number, $len-$i*3, 3);
-        if($i == 2 /*in other word: $i-1 = 1*/ && intval($triplet) == 1)
-        {
-          $return = "seribu" . (strlen($return) > 0 ? " " . $return : "");
-          continue;
-        } else {
-          $return = $this->processTriple($triplet) . /*fix blank at the end spaces*/($i >= 2 ? " " . $this->x3[$i-1] : "") . (strlen($return) > 0 ? " " . $return : "");
-        }
+    $section = ceil($len / 3);
+    $mod = $len % 3;
+    for ($i = 1; $i <= $section ; $i++) {
+      if($i == $section && $mod > 0)
+        $triplet = substr($number, 0, $mod);
+      else
+        $triplet = substr($number, $len-$i*3, 3);
+      if($i == 2 /* in other word: $i-1 = 1 */ && intval($triplet) == 1)
+      {
+        $return = "seribu" . (strlen($return) > 0 ? " " . $return : "");
+        continue;
+      } else {
+        $return = $this->processTriple($triplet) . /* fix spaces at the end of the string */($i >= 2 ? " " . $this->x3[$i-1] : "") . (strlen($return) > 0 ? " " . $return : "");
       }
+    }
+
     $return = str_replace($this->to_replace, $this->replacement, $return);
-    //$return = substr($return, 0, strlen($return)-2);
     return $return;
   }
   private function processTriple($number)
@@ -55,7 +55,6 @@ class Terbilang
       $return = $this->x0[$cur] . (strlen($return) > 0 ? " " . $return : "");
     }
     return $return;
-    //return substr($return, 0, strlen($return)-1);
   }
   protected function getNumberOnly($n)
 	{
