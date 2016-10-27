@@ -1,92 +1,63 @@
 <?php
 class Terbilang
 {
-	private $x3 = Array("", "ribu", "juta", "miliar", "triliun", "kuadriliun", "kuintiliun", "sekstiliun", "septiliun", "oktiliun", "noniliun", "desiliun");
-	private $x2 = Array("ratus", "seratus");
-	private $x1 = Array("puluh", "belas", "sepuluh", "sebelas");
-	private $x0 = Array("nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan");
+  private $x3 = Array("", "ribu", "juta", "miliar", "triliun", "kuadriliun", "kuintiliun", "sekstiliun", "septiliun", "oktiliun", "noniliun", "desiliun");
+  private $x1 = Array("puluh", "belas", "ratus");
+  private $x0 = Array("nol","satu","dua","tiga","empat","lima","enam","tujuh","delapan","sembilan");
+  private $to_replace = Array("satu puluh", "satu ratus", "satu belas");
+  private $replacement = Array("sepuluh", "seratus", "sebelas");
+  public function toWord($number)
+  {
+    $number = $this->getNumberOnly($number);
+    $len = strlen($number);
+    $return = "";
 
-	public function __construct()
-	{
-		// constructor
-	}
-	public function process($n)
-	{
-		$n = $this->distinguish_num($n); // only get numbers
-		$len = strlen($n);
-		$head = $len % 3; //0,1,2
+      $section = ceil($len / 3);
+      $mod = $len % 3;
+      for ($i = 1; $i <= $section ; $i++) {
+        if($i == $section && $mod > 0)
+          $triplet = substr($number, 0, $mod);
+        else
+          $triplet = substr($number, $len-$i*3, 3);
+        if($i == 2 /*in other word: $i-1 = 1*/ && intval($triplet) == 1)
+        {
+          $return = "seribu" . (strlen($return) > 0 ? " " . $return : "");
+          continue;
+        } else {
+          $return = $this->processTriple($triplet) . /*fix blank at the end spaces*/($i >= 2 ? " " . $this->x3[$i-1] : "") . (strlen($return) > 0 ? " " . $return : "");
+        }
+      }
+    $return = str_replace($this->to_replace, $this->replacement, $return);
+    //$return = substr($return, 0, strlen($return)-2);
+    return $return;
+  }
+  private function processTriple($number)
+  {
+    $len = strlen($number);
+    if($len > 3) return false;
+    $return = "";
+    for($i = $len-1; $i >= 0; $i--)
+    {
+      $cur = intval(substr($number, $i, 1));
+      if($cur == 0)continue;
+      $next = $i-1 < 0 ? -1 : intval(substr($number, $i-1, 1));
+      if($i == 0 && $len == 3)
+        $return = $this->x1[2] . (strlen($return) > 0 ? " " . $return : "");
 
-		$result = "";
-		$nhead = 0; $ntail = 0;
-		$j = 0;
+      else if(($i == 1 && $len == 3) || ($i == 0 && $len == 2))
+        $return = $this->x1[0] . (strlen($return) > 0 ? " " . $return : "");
 
-		if($head > 0)
-		{
-			$nhead = substr($n, 0, $head);
-			$ntail = substr($n, $head);
-		}else{
-			// if there's no head
-			$ntail = $n;
-		}
-
-		$sections = ceil(strlen($ntail)/3);
-		if($sections > count($this->x3)) return false;
-
-		// process `tail`
-		for($i = $sections-1; $i >= 0;$i--)
-		{
-			if($ntail == 0)break;
-			$k = substr($ntail, ($i*3), 3);
-			/*
-			// the $k is always 3 digits long
-			$result = (strlen($k) == 1 ? x0($k) : (strlen($k) == 2 ? x1($k) : x2($k)))." ".$x3[$j] . " " . $result;
-			*/
-			// fix seribu
-			$result = (intval($k) == 1 && $j == 1 ? "seribu" : $this->ratusan($k)." ".$this->x3[$j])." ". $result;
-			$j++;
-		}
-		if($head > 0)
-			if($j == 1 /*ribuan*/ && intval($nhead) == 1)
-				$result = "seribu ".$result;
-			else
-			$result = (strlen($nhead) == 1 ? $this->satuan($nhead) : (strlen($nhead) == 2 ? $this->puluhan($nhead) : $this->ratusan($nhead)))." ".$this->x3[$j] . " " . $result;
-		return substr($result, 0, strlen($result)-2); // removing two spaces at the end of the string
-	}
-
-	public function ratusan($n)
-	{
-		$res = "";
-		if(strlen($n) != 3)return false;
-
-		if(substr($n, 0, 1) == 1)
-			$res = $this->x2[1];
-		else
-		{
-			$res = substr($n, 0, 1) == 0 ? "" : ($this->satuan(substr($n, 0, 1)) . " " . $this->x2[0]);
-		}
-		return $res." ". $this->puluhan(substr($n, 1, 2));
-	}
-	public function puluhan($n)
-	{
-		if(strlen($n) != 2) return false;
-		if($n == 10)return $this->x1[2];
-		elseif($n == 11)return $this->x1[3];
-		elseif($n > 11 && $n < 20)
-		{
-			return $this->satuan(substr($n, 1, 1))." ".$this->x1[1];
-		}
-		else
-		{
-			return (substr($n, 0, 1) == 0 ? "" : ($this->satuan(substr($n, 0, 1))." ".$this->x1[0]." ")) . $this->satuan(substr($n, 1, 1), false);
-		}
-	}
-	public function satuan($n, $retnol = true)
-	{
-		if(strlen($n) != 1) return false;
-		if($n == 0 && $retnol == false)return "";
-		return $this->x0[$n];
-	}
-	protected function distinguish_num($n)
+      else if((($i == 2 && $len == 3) || ($i == 1 && $len == 2)) && $next == 1 && $cur != 0)
+      {
+        $return = $this->x1[1] . (strlen($return) > 0 ? " " . $return : "");
+        $i -= 1;
+      }
+      $return = $this->x0[$cur] . (strlen($return) > 0 ? " " . $return : "");
+    }
+    return $return;
+    //return substr($return, 0, strlen($return)-1);
+  }
+  protected function getNumberOnly($n)
 	{
 		$n = (string)$n;
 		$o = "";
