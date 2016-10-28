@@ -3,7 +3,6 @@ define("PATH_ROOT", dirname(__FILE__));
 if(file_exists($PATH = (PATH_ROOT . "/../src/terbilang.php")))
 {
   include($PATH);
-  include(PATH_ROOT . "/../src/terbilang_newlib.php");
 }
 use PHPUnit\Framework\TestCase;
 
@@ -62,7 +61,7 @@ class terbilangTest extends TestCase
   }
   public function testProcessTwo()
   {
-    $a = new Terbilang_New();
+    $a = new Terbilang();
     $samples = array_flip(array_slice($this->samples, 2, count($this->samples), true));
     // the first two elements of the sample won't be included as both are purposely
     // only for testing the toWord method
