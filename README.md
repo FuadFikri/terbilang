@@ -1,8 +1,12 @@
 # terbilang
 a library to convert a number to its word representation and vice versa (currently in Bahasa Indonesia language).
+
+
 ## Features
 1. convert number to word (up to 36 digits of number)
 2. convert word to number
+
+
 ## How to use
 ```php
 <?php
