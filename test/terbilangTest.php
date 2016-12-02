@@ -76,5 +76,24 @@ class terbilangTest extends TestCase
       $this->assertEquals($expectation, $a->toNumber($sample));
     }
   }
+  public function testtoWordSingleRep()
+  {
+    $cases = array(
+      '732918654123123' => "tujuh tiga dua sembilan satu delapan enam lima empat satu dua tiga satu dua tiga",
+      '112332' => "satu satu dua tiga tiga dua",
+      "01327000" => "nol satu tiga dua tujuh nol nol nol"
+    );
+    $t = new Terbilang();
+    foreach($cases as $sample => $expectation)
+    {
+      $this->assertEquals($expectation, $t->toWordSingleRep($sample));
+    }
+
+    $new_cases = array_merge(array_flip($cases), array("nol x delapan kosong satu apa ini dua satu tambahan y tiga" => "081213"));
+
+    foreach ($new_cases as $sample => $expectation) {
+      $this->assertEquals($expectation, $t->toNumberSingleRep($sample));
+    }
+  }
 }
 ?>
