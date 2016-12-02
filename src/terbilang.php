@@ -32,11 +32,30 @@ class Terbilang
     return $return;
   }
 
+  public function toWordSingleRep($number)
+  {
+    $number = $this->getNumberOnly($number);
+    $len = strlen($number);
+    $return = "";
+    for ($i=0; $i < $len; $i++) {
+      $return .= $this->number[intval($number[$i])];
+      if($i != $len-1)
+        $return .= " ";
+    }
+    return $return;
+  }
+
+  public function toNumberSingleRep($words)
+  {
+    return $this->toNumberInternal($words, true);
+  }
   public function toNumber($words)
   {
-    $words = str_replace(array_merge($this->replacement, array("seribu")),
-              array_merge($this->to_replace, array("satu ribu")),
-              $words);
+    return $this->toNumberInternal($words, false);
+  }
+  private function toNumberInternal($words, $single_rep = false)
+  {
+    $words = str_replace(array_merge($this->replacement, array("seribu")), array_merge($this->to_replace, array("satu ribu")), $words);
     $words = preg_replace('/([A-Za-z]+) belas/', 'satu puluh $1', $words);
     $words = str_replace($this->number, array_keys($this->number), $words);
     $arrayword = explode(" ", $words);
@@ -51,15 +70,11 @@ class Terbilang
       {
         $triple_pad = (3 * intval(array_keys($this->tri_digit_ext, $cur)[0]));
         $ret = str_pad($ret, $triple_pad, "0", STR_PAD_LEFT);
-      }
-      else if(in_array($cur, $duplet))
-      {
+      } else if(in_array($cur, $duplet)) {
         $double_pad = intval(array_keys($duplet, $cur)[0]);
         $ret = str_pad($ret, $triple_pad + $double_pad, "0", STR_PAD_LEFT);
-      }
-      else
-      {
-        if(intval($cur) == 0)
+      } else {
+        if(intval($cur) == 0 && ((!$single_rep) ||  ($single_rep && $cur != "0")))
           continue; // skip adding unnecessary char, like : x puluh, x belas will be returned as 0, and 10
         $ret = $cur . $ret;
       }
